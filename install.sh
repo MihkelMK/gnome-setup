@@ -20,7 +20,7 @@ confirm_install() {
   return 0
 }
 
-setup_popshell() {
+install_popshell() {
   POPSHELL_INSTALLED="$1"
 
   if ! $POPSHELL_INSTALLED; then
@@ -46,7 +46,7 @@ POPSHELL_INSTALLED=$(gnome-extensions list | grep -q "pop-shell")
 
 if confirm_install "$INDEX" "$TITLE" "$DESC"; then
   # False only if it wasn't installed before and user cancels install
-  if setup_popshell "$POPSHELL_INSTALLED"; then
+  if install_popshell "$POPSHELL_INSTALLED"; then
     export POPSHELL_INSTALLED=true
   fi
 fi
