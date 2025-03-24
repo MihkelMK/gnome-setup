@@ -65,3 +65,14 @@ if confirm_install "$INDEX" "$TITLE" "$DESC"; then
     bash scripts/ulauncher.sh "$POPSHELL_INSTALLED"
   fi
 fi
+
+# Install Space Bar
+INDEX=3
+TITLE="Space Bar Extension"
+DESC="Show workspaces as numbers in top panel"
+
+if confirm_install "$INDEX" "$TITLE" "$DESC"; then
+  if bash scripts/pacman_install.sh "Space Bar Extension" "gnome-shell-extension-space-bar-git"; then
+    bash scripts/spacebar.sh "$POPSHELL_INSTALLED"
+  fi
+fi
