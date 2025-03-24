@@ -85,8 +85,8 @@ set_keybindings() {
 
     #---   Disable incompatible shortcuts   ---#
 
-    # Restore the keyboard shortcuts: disable <Super>Escape
-    dconf write ${KEYS_MUTTER_WAYLAND_RESTORE} "@as []"
+    # Restore the keyboard shortcuts: disable <Super>Escape (was disabled by default for me)
+    # dconf write ${KEYS_MUTTER_WAYLAND_RESTORE} "@as []"
     # Hide window: disable <Super>h
     dconf write ${KEYS_GNOME_WM}/minimize "@as ['<Super>comma']"
     # Show the activities overview: disable <Super>s
@@ -95,20 +95,17 @@ set_keybindings() {
     dconf write ${KEYS_GNOME_SHELL}/toggle-quick-settings "@as []"
     # Show the quick settings menu: disable <Super>a
     dconf write ${KEYS_GNOME_SHELL}/toggle-application-view "@as []"
-    # Move to monitor up: disable <Super><Shift>Up
-    dconf write ${KEYS_GNOME_WM}/move-to-monitor-up "@as []"
-    # Move to monitor down: disable <Super><Shift>Down
-    dconf write ${KEYS_GNOME_WM}/move-to-monitor-down "@as []"
 
+    # These are handled by Pop Shell, disable defaults
     # Super + direction keys, move window left and right monitors, or up and down workspaces
-    # Move window one monitor to the left
     dconf write ${KEYS_GNOME_WM}/move-to-monitor-left "@as []"
-    # Move window one monitor to the right
     dconf write ${KEYS_GNOME_WM}/move-to-monitor-right "@as []"
+    dconf write ${KEYS_GNOME_WM}/move-to-monitor-up "@as []"
+    dconf write ${KEYS_GNOME_WM}/move-to-monitor-down "@as []"
 
     # Move window to workspace (up/down specified in popOS shell extension settings)
     dconf write ${KEYS_GNOME_WM}/move-to-workspace-left "['${workspace_move}Left', '${workspace_move}KP_Left', '${workspace_move}${left}']"
-    dconf write ${KEYS_GNOME_WM}/move-to-workspace-right "['${workspace_switch}Right', '${workspace_move}KP_Right', '${workspace_move}${right}']"
+    dconf write ${KEYS_GNOME_WM}/move-to-workspace-right "['${workspace_move}Right', '${workspace_move}KP_Right', '${workspace_move}${right}']"
 
     # Move view to workspace
     dconf write ${KEYS_GNOME_WM}/switch-to-workspace-down "['${workspace_switch}Down', '${workspace_switch}KP_Down', '${workspace_switch}${down}']"
@@ -120,20 +117,23 @@ set_keybindings() {
     dconf write ${KEYS_MUTTER}/toggle-tiled-left "@as []"
     dconf write ${KEYS_MUTTER}/toggle-tiled-right "@as []"
 
-    # Toggle maximization state
-    dconf write ${KEYS_GNOME_WM}/toggle-maximized "['<Super>m']"
-    # Lock screen
-    dconf write ${KEYS_MEDIA}/screensaver "@as []"
-    # Home folder
-    dconf write ${KEYS_MEDIA}/home "@as []"
-    # Launch email client
-    dconf write ${KEYS_MEDIA}/email "@as []"
-    # Launch web browser
-    dconf write ${KEYS_MEDIA}/www "@as []"
-    # Launch terminal
-    dconf write ${KEYS_MEDIA}/terminal "@as []"
-    # Rotate Video Lock
-    dconf write ${KEYS_MEDIA}/rotate-video-lock-static "@as []"
+    # Toggle maximization state (default is <Super>m)
+    # I like to use it as a pseudo fullscreen toggle and as such f is better
+    dconf write ${KEYS_GNOME_WM}/toggle-maximized "['<Super>f']"
+
+    # Possible accidental trigger when exiting management mode (<Super>Escape)
+    # Escape exits management and <Super> is used in many movement shortcuts
+    # I have accidentally triggered the default shortcut
+    dconf write ${KEYS_MEDIA}/screensaver "['<Super>l']"
+
+    # Possible conflict with <Super>f (not with my settings)
+    # dconf write ${KEYS_MEDIA}/home "@as []"
+    
+    # Possible conflict with <Super>e (not with my settings)
+    # dconf write ${KEYS_MEDIA}/email "@as []"
+    
+    # Rotate Video Lock (default didn't conflict with anything for me)
+    # dconf write ${KEYS_MEDIA}/rotate-video-lock-static "@as []"
 
     #---   Configure popOS shell shortcuts   ---#
 
@@ -225,7 +225,6 @@ custom_defaults
 dconf write /org/gnome/shell/disable-user-extensions false
 
 # Use a window placement behavior which works better for tiling
-
 if gnome-extensions list | grep native-window; then
     gnome-extensions enable $(gnome-extensions list | grep native-window)
 fi
