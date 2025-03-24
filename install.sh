@@ -62,6 +62,6 @@ fi
 
 if confirm_install "$INDEX" "$TITLE" "$DESC"; then
   if bash scripts/pacman_install.sh "Ulauncher" "ulauncher"; then
-    bash scripts/ulauncher.sh
+    bash scripts/ulauncher.sh "$POPSHELL_INSTALLED"
   fi
 fi
