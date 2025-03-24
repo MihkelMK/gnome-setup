@@ -38,6 +38,47 @@ install_popshell() {
   return 0
 }
 
+install_themes() {
+  # Icon theme
+  if ! bash scripts/pacman_install.sh "Colloid icon theme" "colloid-icon-theme-git" "yes"; then
+    return 1
+  fi
+
+  # Theme GTK3 apps
+  if ! bash scripts/pacman_install.sh "GTK3 port of Libadwaita" "adw-gtk-theme" "yes"; then
+    return 1
+  fi
+
+  # Theme QT5 apps
+  if ! bash scripts/pacman_install.sh "Qt5 Configuration Utility" "qt5ct" "yes"; then
+    return 1
+  fi
+  if ! bash scripts/pacman_install.sh "SVG-based theme engine for Qt5" "kvantum-qt5-git" "yes"; then
+    return 1
+  fi
+  if ! bash scripts/pacman_install.sh "Adwaita-like client-side decorations for Qt5" "qadwaitadecorations-qt5-git" "yes"; then
+    return 1
+  fi
+
+  # Theme QT6 apps
+  if ! bash scripts/pacman_install.sh "Qt6 Configuration Utility" "qt6ct" "yes"; then
+    return 1
+  fi
+  if ! bash scripts/pacman_install.sh "SVG-based theme engine for Qt6" "kvantum-git" "yes"; then
+    return 1
+  fi
+  if ! bash scripts/pacman_install.sh "Adwaita-like client-side decorations for Qt6" "qadwaitadecorations-qt6-git" "yes"; then
+    return 1
+  fi
+
+  # Install libadwaita theme for kvantum
+  if ! bash scripts/pacman_install.sh "Libadwaita theme for Kvantum" "kvantum-theme-libadwaita-git" "yes"; then
+    return 1
+  fi
+
+  return 0
+}
+
 # Install Pop shell
 INDEX=1
 TITLE="Pop Shell Extension"
@@ -75,4 +116,45 @@ if confirm_install "$INDEX" "$TITLE" "$DESC"; then
   if bash scripts/pacman_install.sh "Space Bar Extension" "gnome-shell-extension-space-bar-git"; then
     bash scripts/spacebar.sh "$POPSHELL_INSTALLED"
   fi
+fi
+
+# Fonts
+INDEX=4
+TITLE="Fira Sans"
+DESC="Use Fira Sans for interface text"
+CUSTOM_FONT=false
+INTERFACE_DCONF=/org/gnome/desktop/interface
+
+if confirm_install "$INDEX" "$TITLE" "$DESC"; then
+  if bash scripts/pacman_install.sh "Fira Sans" "ttf-fira-sans"; then
+
+    dconf write ${INTERFACE_DCONF}/font-name "'Fira Sans 11'"
+    dconf write ${INTERFACE_DCONF}/document-font-name "'Fira Sans 11'"
+
+    export CUSTOM_FONT=true
+  fi
+elif [ "$(dconf read ${INTERFACE_DCONF}/font-name)" == "'Fira Sans 11'" ]; then
+  export CUSTOM_FONT=true
+fi
+
+# Themes
+INDEX=5
+TITLE="Themes"
+DESC="Make GTK3, Qt5 and Qt6 look like Libadwaita"
+
+if confirm_install "$INDEX" "$TITLE" "$DESC"; then
+  echo "This will install packages: colloid-icon-theme-git, adw-gtk-theme, qt5ct, qt6ct, kvantum-qt5-git, kvantum-git, qadwaitadecorations-qt5-git, qadwaitadecorations-qt6-git and kvantum-theme-libadwaita-git."
+
+  read -rp "Are you sure? (Y/n) " CONT
+  if ! test "$CONT" = "n"; then
+    echo "Installing required packages"
+
+    if install_themes; then
+      echo
+      bash scripts/themes.sh "$CUSTOM_FONT"
+    else
+      echo "Packages failed to install. Setup cancelled."
+    fi
+  fi
+
 fi
