@@ -1,3 +1,5 @@
+#!/bin/bash
+
 KEYS_GNOME_WM=/org/gnome/desktop/wm/keybindings
 KEYS_MUTTER=/org/gnome/mutter
 
