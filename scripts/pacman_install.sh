@@ -34,7 +34,7 @@ if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
     echo "$NAME successfully installed from $PACKAGE."
   else
     echo "Installation failed. You may need to enable the AUR or use an AUR helper like yay."
-    echo "Try: yay -S $NAME"
+    echo "Try: yay -S $PACKAGE"
     exit 1
   fi
 else
