@@ -89,6 +89,7 @@ if confirm_install "$INDEX" "$TITLE" "$DESC"; then
   # False only if it wasn't installed before and user cancels install
   if install_popshell "$POPSHELL_INSTALLED"; then
     export POPSHELL_INSTALLED=true
+    echo "$TITLE setup finished"
   fi
 fi
 
@@ -104,6 +105,7 @@ fi
 if confirm_install "$INDEX" "$TITLE" "$DESC"; then
   if bash scripts/pacman_install.sh "Ulauncher" "ulauncher"; then
     bash scripts/ulauncher.sh "$POPSHELL_INSTALLED"
+    echo "$TITLE setup finished"
   fi
 fi
 
@@ -115,6 +117,7 @@ DESC="Show workspaces as numbers in top panel"
 if confirm_install "$INDEX" "$TITLE" "$DESC"; then
   if bash scripts/pacman_install.sh "Space Bar Extension" "gnome-shell-extension-space-bar-git"; then
     bash scripts/spacebar.sh "$POPSHELL_INSTALLED"
+    echo "$TITLE setup finished"
   fi
 fi
 
@@ -132,9 +135,11 @@ if confirm_install "$INDEX" "$TITLE" "$DESC"; then
     dconf write ${INTERFACE_DCONF}/document-font-name "'Fira Sans 11'"
 
     export CUSTOM_FONT=true
+    echo "$TITLE setup finished"
   fi
 elif [ "$(dconf read ${INTERFACE_DCONF}/font-name)" == "'Fira Sans 11'" ]; then
   export CUSTOM_FONT=true
+  echo "$TITLE already used for interface text"
 fi
 
 # Themes
@@ -152,6 +157,7 @@ if confirm_install "$INDEX" "$TITLE" "$DESC"; then
     if install_themes; then
       echo
       bash scripts/themes.sh "$CUSTOM_FONT"
+      echo "$TITLE setup finished"
     else
       echo "Packages failed to install. Setup cancelled."
     fi
