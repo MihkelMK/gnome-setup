@@ -5,7 +5,11 @@ confirm_install() {
   TITLE="$2"
   DESC="$3"
 
-  echo
+  # Add separator newline between prompts
+  if [ "$INDEX" -gt 1 ]; then
+    echo
+  fi
+
   echo "$INDEX. $TITLE - $DESC"
 
   read -rp "Install and configure? (Y/n) " CONT
