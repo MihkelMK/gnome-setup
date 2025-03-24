@@ -1,47 +1,63 @@
-#! /bin/bash
+#!/bin/bash
 
-SKIP_POPSHELL=false
-POPSHELL_INSTALLED=false
+confirm_install() {
+  INDEX="$1"
+  TITLE="$2"
+  DESC="$3"
 
-if gnome-extensions list | grep -q "pop-shell"; then
-  export POPSHELL_INSTALLED=true
-else
-  if sh scripts/pacman_install.sh "Pop Shell Extension" "gnome-shell-extension-pop-shell-git"; then
-    export POPSHELL_INSTALLED=true
-  else
-    export SKIP_POPSHELL=true
-    echo "Pop Shell extension not installed. Skipping setup."
-  fi
   echo
-fi
+  echo "$INDEX. $TITLE - $DESC"
 
-if ! $SKIP_POPSHELL; then
-  read -rp "Install Pop Shell setup? (Y/n) " CONT
-  if ! test "$CONT" = "n"; then
-    # Load PopOS shell extensions config
-    sh scripts/tiling.sh
+  read -rp "Install and configure? (Y/n) " CONT
+  if test "$CONT" = "n"; then
+    return 1
+  fi
+
+  return 0
+}
+
+setup_popshell() {
+  POPSHELL_INSTALLED="$1"
+
+  if ! $POPSHELL_INSTALLED; then
+    # Extension not installed
+    if ! bash scripts/pacman_install.sh "Pop Shell Extension" "gnome-shell-extension-pop-shell-git"; then
+      # User cancelled install/install failed
+      echo "Pop Shell extension not installed. Skipping setup."
+      return 1
+    fi
+  fi
+
+  # Load Pop shell config
+  bash scripts/tiling.sh
+
+  return 0
+}
+
+# Install Pop shell
+INDEX=1
+TITLE="Pop Shell Extension"
+DESC="Tiling windows managed with keyboard"
+POPSHELL_INSTALLED=$(gnome-extensions list | grep -q "pop-shell")
+
+if confirm_install "$INDEX" "$TITLE" "$DESC"; then
+  # False only if it wasn't installed before and user cancels install
+  if setup_popshell "$POPSHELL_INSTALLED"; then
+    export POPSHELL_INSTALLED=true
   fi
 fi
 
-SKIP_ULAUNCHER=false
+# Install Ulauncher
+INDEX=2
+TITLE="Ulauncher"
+DESC="My preffered app launcher"
 
 if $POPSHELL_INSTALLED; then
-  echo
-  read -rp "Replace Pop Launcher with Ulauncher? (Y/n) " CONT
-  if test "$CONT" = "n"; then
-    export SKIP_ULAUNCHER=true
-  fi
-else
-  echo
-  read -rp "Install Ulauncher? (Y/n) " CONT
-  if test "$CONT" = "n"; then
-    export SKIP_ULAUNCHER=true
-  fi
+  DESC="$DESC (replaces Pop Launcher)"
 fi
 
-if ! $SKIP_ULAUNCHER; then
-  if sh scripts/pacman_install.sh "Ulauncher" "ulauncher"; then
-    # Setup Ulauncher
-    sh scripts/ulauncher.sh
+if confirm_install "$INDEX" "$TITLE" "$DESC"; then
+  if bash scripts/pacman_install.sh "Ulauncher" "ulauncher"; then
+    bash scripts/ulauncher.sh
   fi
 fi
