@@ -60,10 +60,12 @@ if [ "$(dconf read ${DCONF_INTERFACE}/gtk-theme)" != "'$GTK_THEME'" ]; then
 fi
 
 # Make Qt5/Qt6 apps use qt5ct/qt6ct
-echo ""
-echo "Adding QT_WAYLAND_DECORATION and QT_QPA_PLATFORMTHEME to /etc/profile"
-printf "# added by gnome-setup script start\nexport QT_WAYLAND_DECORATION=adwaita\nexport QT_QPA_PLATFORMTHEME=qt5ct\n# added by gnome-setup script end\n" | sudo tee -a /etc/profile >/dev/null
-echo
+if [ "$QT_WAYLAND_DECORATION" != "adwaita" ] || [ "$QT_QPA_PLATFORMTHEME" != "qt5ct" ]; then
+  echo ""
+  echo "Adding QT_WAYLAND_DECORATION and QT_QPA_PLATFORMTHEME to /etc/profile"
+  printf "# added by gnome-setup script start\nexport QT_WAYLAND_DECORATION=adwaita\nexport QT_QPA_PLATFORMTHEME=qt5ct\n# added by gnome-setup script end\n" | sudo tee -a /etc/profile >/dev/null
+  echo
+fi
 
 # Update qt5ct.conf
 if [ -f "$QT5_CONF_PATH/qt5ct.conf" ]; then
