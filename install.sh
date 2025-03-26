@@ -48,10 +48,10 @@ install_themes() {
   if ! bash scripts/pacman_install.sh "Qt5 Configuration Utility" "qt5ct" "yes"; then
     return 1
   fi
-  if ! bash scripts/pacman_install.sh "SVG-based theme engine for Qt5" "kvantum-qt5-git" "yes"; then
+  if ! bash scripts/pacman_install.sh "SVG-based theme engine for Qt5" "kvantum-qt5" "yes"; then
     return 1
   fi
-  if ! bash scripts/pacman_install.sh "Adwaita-like client-side decorations for Qt5" "qadwaitadecorations-qt5-git" "yes"; then
+  if ! bash scripts/pacman_install.sh "Adwaita-like client-side decorations for Qt5" "qadwaitadecorations-qt5" "yes"; then
     return 1
   fi
 
@@ -59,10 +59,10 @@ install_themes() {
   if ! bash scripts/pacman_install.sh "Qt6 Configuration Utility" "qt6ct" "yes"; then
     return 1
   fi
-  if ! bash scripts/pacman_install.sh "SVG-based theme engine for Qt6" "kvantum-git" "yes"; then
+  if ! bash scripts/pacman_install.sh "SVG-based theme engine for Qt6" "kvantum" "yes"; then
     return 1
   fi
-  if ! bash scripts/pacman_install.sh "Adwaita-like client-side decorations for Qt6" "qadwaitadecorations-qt6-git" "yes"; then
+  if ! bash scripts/pacman_install.sh "Adwaita-like client-side decorations for Qt6" "qadwaitadecorations-qt6" "yes"; then
     return 1
   fi
 
@@ -143,7 +143,7 @@ TITLE="Themes"
 DESC="Make GTK3, Qt5 and Qt6 look like Libadwaita"
 
 if confirm_install "$INDEX" "$TITLE" "$DESC"; then
-  echo "This will install packages: adw-gtk-theme, qt5ct, qt6ct, kvantum-qt5-git, kvantum-git, qadwaitadecorations-qt5-git, qadwaitadecorations-qt6-git and kvantum-theme-libadwaita-git."
+  echo "This will install packages: adw-gtk-theme, qt5ct, qt6ct, kvantum-qt5, kvantum, qadwaitadecorations-qt5, qadwaitadecorations-qt6 and kvantum-theme-libadwaita-git."
 
   read -rp "Are you sure? (Y/n) " CONT
   if ! test "$CONT" = "n"; then
