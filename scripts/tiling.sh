@@ -128,10 +128,10 @@ set_keybindings() {
 
     # Possible conflict with <Super>f (not with my settings)
     # dconf write ${KEYS_MEDIA}/home "@as []"
-    
+
     # Possible conflict with <Super>e (not with my settings)
     # dconf write ${KEYS_MEDIA}/email "@as []"
-    
+
     # Rotate Video Lock (default didn't conflict with anything for me)
     # dconf write ${KEYS_MEDIA}/rotate-video-lock-static "@as []"
 
@@ -229,8 +229,15 @@ if gnome-extensions list | grep native-window; then
     gnome-extensions enable $(gnome-extensions list | grep native-window)
 fi
 
-# Workspaces spanning displays works better with Pop Shell
-dconf write /org/gnome/mutter/workspaces-only-on-primary false
-
 # Disable tile when dragging to screen edges
 dconf write /org/gnome/mutter/edge-tiling false
+
+ONLY_ON_PRIMARY=true
+echo
+echo "As there can't be separate workspaces for each monitor, I prefer having workspaces on only the primary monitor."
+read -rp "Make workspaces span all monitors? (y/N) " CONT
+if test "$CONT" = 'y'; then
+    export ONLY_ON_PRIMARY=false
+fi
+
+dconf write /org/gnome/mutter/workspaces-only-on-primary ${ONLY_ON_PRIMARY}
