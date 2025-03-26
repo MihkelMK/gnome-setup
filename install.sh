@@ -39,11 +39,6 @@ install_popshell() {
 }
 
 install_themes() {
-  # Icon theme
-  if ! bash scripts/pacman_install.sh "Colloid icon theme" "colloid-icon-theme-git" "yes"; then
-    return 1
-  fi
-
   # Theme GTK3 apps
   if ! bash scripts/pacman_install.sh "GTK3 port of Libadwaita" "adw-gtk-theme" "yes"; then
     return 1
@@ -148,7 +143,7 @@ TITLE="Themes"
 DESC="Make GTK3, Qt5 and Qt6 look like Libadwaita"
 
 if confirm_install "$INDEX" "$TITLE" "$DESC"; then
-  echo "This will install packages: colloid-icon-theme-git, adw-gtk-theme, qt5ct, qt6ct, kvantum-qt5-git, kvantum-git, qadwaitadecorations-qt5-git, qadwaitadecorations-qt6-git and kvantum-theme-libadwaita-git."
+  echo "This will install packages: adw-gtk-theme, qt5ct, qt6ct, kvantum-qt5-git, kvantum-git, qadwaitadecorations-qt5-git, qadwaitadecorations-qt6-git and kvantum-theme-libadwaita-git."
 
   read -rp "Are you sure? (Y/n) " CONT
   if ! test "$CONT" = "n"; then

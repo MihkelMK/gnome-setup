@@ -21,13 +21,11 @@ if $DARK_MODE; then
   export GTK_THEME='adw-gtk3-dark'
   export QT_THEME="kvantum-dark"
   export KVANTUM_THEME="KvLibadwaitaDark"
-  export ICON_THEME="Colloid-dark"
 else
   dconf write ${DCONF_INTERFACE}/color-scheme "'default'"
   export GTK_THEME='adw-gtk3'
   export QT_THEME="kvantum"
   export KVANTUM_THEME="KvLibadwaita"
-  export ICON_THEME="Colloid"
 fi
 
 FONT_FIXED="Adwaita Mono"
@@ -46,12 +44,6 @@ QT6_CONF_PATH="$HOME/.config/qt6ct"
 QT6_FONT_SUFFIX=",11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
 FONT_FIXED_QT6="$FONT_FIXED$QT6_FONT_SUFFIX"
 FONT_GENERAL_QT6="$FONT_GENERAL$QT6_FONT_SUFFIX"
-
-# Change icon theme
-if [ "$(dconf read ${DCONF_INTERFACE}/icon-theme)" != "'$ICON_THEME'" ]; then
-  echo "Setting icon theme to '$ICON_THEME'"
-  dconf write ${DCONF_INTERFACE}/icon-theme "'${ICON_THEME}'"
-fi
 
 # Theme GTK3 apps
 if [ "$(dconf read ${DCONF_INTERFACE}/gtk-theme)" != "'$GTK_THEME'" ]; then
@@ -75,7 +67,6 @@ fi
 
 cp configs/qtct.conf "$QT5_CONF_PATH/qt5ct.conf" &&
   sed -i "s|path_placeholder|$QT5_CONF_PATH|g" "$QT5_CONF_PATH/qt5ct.conf" &&
-  sed -i "s/icon_placeholder/$ICON_THEME/g" "$QT5_CONF_PATH/qt5ct.conf" &&
   sed -i "s/style_placeholder/$QT_THEME/g" "$QT5_CONF_PATH/qt5ct.conf" &&
   sed -i "s/fixed_font_placeholder/$FONT_FIXED_QT5/g" "$QT5_CONF_PATH/qt5ct.conf" &&
   sed -i "s/general_font_placeholder/$FONT_GENERAL_QT5/g" "$QT5_CONF_PATH/qt5ct.conf"
@@ -89,7 +80,6 @@ fi
 
 cp configs/qtct.conf "$QT6_CONF_PATH/qt6ct.conf" &&
   sed -i "s|path_placeholder|$QT6_CONF_PATH|g" "$QT6_CONF_PATH/qt6ct.conf" &&
-  sed -i "s/icon_placeholder/$ICON_THEME/g" "$QT6_CONF_PATH/qt6ct.conf" &&
   sed -i "s/style_placeholder/$QT_THEME/g" "$QT6_CONF_PATH/qt6ct.conf" &&
   sed -i "s/fixed_font_placeholder/$FONT_FIXED_QT6/g" "$QT6_CONF_PATH/qt6ct.conf" &&
   sed -i "s/general_font_placeholder/$FONT_GENERAL_QT6/g" "$QT6_CONF_PATH/qt6ct.conf"
